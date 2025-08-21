@@ -1404,7 +1404,7 @@ class ModelRunner:
 
             return AscendAttnBackend(self)
         elif self.server_args.attention_backend == "npumla":
-            from omni.sglang.models.common.layers.attention.npumla_backend import MpuMLABackend
+            from omni.sglang.models.common.layers.attention.npumla_backend import NpuMLABackend
 
             return NpuMLABackend(self)
         elif backend_str == "triton":
