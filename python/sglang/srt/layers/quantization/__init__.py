@@ -72,7 +72,7 @@ from sglang.srt.layers.quantization.qoq import QoQConfig
 from sglang.srt.layers.quantization.utils import get_linear_quant_method
 from sglang.srt.layers.quantization.w4afp8 import W4AFp8Config
 from sglang.srt.layers.quantization.w8a8_fp8 import W8A8Fp8Config
-from sglang.srt.layers.quantization.w8a8_int8 import W8A8Int8Config
+from omni.sglang.models.common.layers.quantization.w8a8_int8 import W8A8Int8Config
 
 if TYPE_CHECKING:
     from sglang.srt.layers.moe.topk import TopKOutput

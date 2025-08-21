@@ -611,7 +611,6 @@ class ForwardBatch:
             )
 
     def prepare_mlp_sync_batch(self, model_runner: ModelRunner):
-
         from sglang.srt.speculative.eagle_utils import EagleDraftInput
 
         assert self.global_num_tokens_cpu is not None

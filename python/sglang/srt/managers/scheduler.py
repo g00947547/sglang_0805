@@ -13,6 +13,7 @@
 # ==============================================================================
 """A scheduler that manages a tensor parallel GPU worker."""
 
+import omni.sglang.adapters.model_patch
 import faulthandler
 import logging
 import os
@@ -2514,6 +2515,7 @@ def run_scheduler_process(
     pipe_writer,
     balance_meta: Optional[DPBalanceMeta] = None,
 ):
+    import omni.sglang.adapters.model_patch
     # Generate the prefix
     prefix = ""
     if dp_rank is not None:

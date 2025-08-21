@@ -245,6 +245,12 @@ class MHATokenToKVPool(KVCache):
             dtype=torch.uint64,
             device=self.device,
         )
+        self.v_data_ptrs = torch.tensor(
+            [x.data_ptr() for x in self.v_buffer],
+            dtype=torch.uint64,
+            device=self.device,
+        )
+        self.data_ptrs = torch.cat([self.k_data_ptrs.to(torch.float16), self.v_data_ptrs.to(torch.float16)], dim=0)
         self.data_strides = torch.tensor(
             [
                 np.prod(x.shape[1:]) * x.dtype.itemsize
@@ -698,6 +704,14 @@ def set_mla_kv_buffer_triton(
         BLOCK=BLOCK,
     )
 
+def set_mla_kv_buffer_npu(
+    kv_buffer: torch.Tensor,
+    loc_tensor: torch.Tensor,
+    cache_k_nope: torch.Tensor,
+    cache_k_rope: torch.Tensor,
+):
+    key_states = torch.cat([cache_k_nope, cache_k_rope], dim=-1)
+    torch_npu.npu_scatter_nd_update_(kv_buffer, loc_tensor.view(-1, 1), key_states)
 
 class MLATokenToKVPool(KVCache):
     def __init__(
