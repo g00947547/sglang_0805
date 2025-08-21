@@ -105,6 +105,6 @@ def import_model_classes():
 
 
 tmp_ = _ModelRegistry(import_model_classes())
-module = importlib.import_module("omni.sglang.models.deepseet.deepseek_v2")
+module = importlib.import_module("omni.sglang.models.deepseek.deepseek_v2")
 tmp_.models["DeepseekV3ForCausalLM"] = module.EntryClass
 ModelRegistry = tmp_
