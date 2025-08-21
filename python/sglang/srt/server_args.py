@@ -409,7 +409,7 @@ class ServerArgs:
             )
             self.disable_cuda_graph = True
 
-        if self.attention_backend == "ascend":
+        if self.attention_backend in ["ascend", "npumla"]:
             logger.warning(
                 "At this moment Ascend attention backend only supports a page_size of 128, change page_size to 128."
             )
@@ -1353,6 +1353,7 @@ class ServerArgs:
                 "fa3",
                 "flashinfer",
                 "flashmla",
+                "npumla",
                 "intel_amx",
                 "torch_native",
                 "ascend",
@@ -1910,7 +1911,7 @@ class ServerArgs:
             "--disaggregation-transfer-backend",
             type=str,
             default=ServerArgs.disaggregation_transfer_backend,
-            choices=["mooncake", "nixl", "ascend"],
+            choices=["mooncake", "nixl", "ascend", "llm-datadist"],
             help="The backend for disaggregation transfer. Default is mooncake.",
         )
         parser.add_argument(

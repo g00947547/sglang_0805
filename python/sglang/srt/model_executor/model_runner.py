@@ -440,6 +440,7 @@ class ModelRunner:
                     "fa3",
                     "triton",
                     "flashmla",
+                    "npumla",
                     "cutlass_mla",
                     "trtllm_mla",
                     "ascend",
@@ -639,6 +640,8 @@ class ModelRunner:
         monkey_patch_vllm_parallel_state()
         monkey_patch_isinstance_for_vllm_base_layer()
 
+        if is_npu():
+            torch.npu.set_device(self.device)
         with self.memory_saver_adapter.region(GPU_MEMORY_TYPE_WEIGHTS):
             self.model = get_model(
                 model_config=self.model_config,
@@ -1400,6 +1403,10 @@ class ModelRunner:
             from sglang.srt.layers.attention.ascend_backend import AscendAttnBackend
 
             return AscendAttnBackend(self)
+        elif self.server_args.attention_backend == "npumla":
+            omni.models.sglang.common.layers.attention.npumla_backend
+
+            return NpuMLABackend(self)
         elif backend_str == "triton":
             assert not self.model_config.is_encoder_decoder, (
                 "Cross attention is not supported in the triton attention backend. "
